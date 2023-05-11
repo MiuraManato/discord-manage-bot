@@ -106,5 +106,16 @@ async def members(ctx):
   member_list = "\n".join([member.name for member in members])
   await send_embed(ctx, "Voice Channel Members", member_list)
 
+bot.remove_command('help')
+@bot.command()
+async def help(ctx):
+  """Show this help message."""
+  embed = discord.Embed(title="Help", description="List of commands", color=discord.Color.blue())
+  embed.add_field(name="/blacklist [add/remove/list] [user]", value="Add, remove or list users in the blacklist. (Administrator only)", inline=False)
+  embed.add_field(name="/omikuzi", value="Draw a fortune.", inline=False)
+  embed.add_field(name="/nya", value="Send a random cat message.", inline=False)
+  embed.add_field(name="/members", value="List members currently in voice channel.", inline=False)
+  embed.add_field(name="/help", value="Show this help message.", inline=False)
+  await ctx.send(embed=embed)
 
 bot.run(TOKEN)

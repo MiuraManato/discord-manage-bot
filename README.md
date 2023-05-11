@@ -8,7 +8,7 @@
 
 ## 各種ファイル情報
 
-### discordbot.py
+### rel-discord-bot.py
 PythonによるDiscordBotのアプリケーションファイルです。
 
 ### requirements.txt
