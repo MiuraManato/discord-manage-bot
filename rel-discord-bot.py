@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
-import asyncio,os
+import asyncio,os,random
 
 bot = commands.Bot(command_prefix="/",intents=discord.Intents.all())
-TOKEN = os.environ["VCtoTEXT_TOKEN"]
+TOKEN = os.environ["DISCORD_TOKEN"]
 
 @bot.event
 async def on_ready():
@@ -15,6 +15,9 @@ BLACKLIST_FILE = "blacklist.txt"
 @bot.command()
 # ブラックリストに追加・削除する処理
 async def blacklist(ctx,*args):
+  # 管理者以外だったら何もしない
+  if not ctx.author.guild_permissions.administrator:
+    return
   # ---以下追加処理---
   if args[0] == "add":
     with open(BLACKLIST_FILE, 'a') as f:
@@ -33,11 +36,13 @@ async def blacklist(ctx,*args):
   # ---ブラックリスト表示処理---
   elif args[0] == "list":
     with open(BLACKLIST_FILE, 'r') as f:
-      lines = f.read()
-      await ctx.send(lines)
+      lines = f.read().splitlines()
+      fields = {f'Member {i+1}': member for i, member in enumerate(lines)}
+      await send_embed(ctx, "Blacklist Members", "Here are the members in the blacklist", fields=fields)
   # ---ブラックリスト表示処理ここまで---
 
 def checkBlacklist(member):
+  """Check if the member is in the blacklist."""
   with open(BLACKLIST_FILE) as f:
     return any(member == line.strip() for line in f)
 
@@ -64,10 +69,42 @@ async def on_voice_state_update(member, before, after):
   """ボイスチャンネルに変更があった場合に受け取る"""
   # ボイスチャンネルに新規接続されたユーザーがいたら実行する
   if before.channel is None and after.channel is not None and member not in inVoiceMember:
+    
     await ManageRole(member,1)
   # ボイスチャンネルを退出したユーザーがいたら実行する
   if member in inVoiceMember and after.channel is None:
     await asyncio.sleep(60) # 1分間待機
     await ManageRole(member,2)
+
+
+async def send_embed(ctx, title, description, color=discord.Color.blue(), fields=None):
+  """Send an embed."""
+  embed = discord.Embed(title=title, description=description, color=color)
+  if fields:
+      for name, value in fields.items():
+          embed.add_field(name=name, value=value, inline=False)
+  await ctx.send(embed=embed)
+
+
+# おみくじ機能
+@bot.command()
+async def omikuzi(ctx):
+  await ctx.send(random.choice(["大吉","吉","半吉","凶","半凶","大凶"]))
+
+# 猫
+@bot.command()
+async def nya(ctx):
+  message = random.choice(["にゃーん","みゃ","にゃう","しゃーっ","みゃおん","nyancat"])
+  await ctx.send(file=discord.File("nyancat.gif")) if message == "nyancat" else await ctx.send(message)
+
+# 通話にいるメンバー一覧を表示
+@bot.command()
+async def members(ctx):
+  if ctx.author.voice is None:
+    return
+  members = ctx.author.voice.channel.members
+  member_list = "\n".join([member.name for member in members])
+  await send_embed(ctx, "Voice Channel Members", member_list)
+
 
 bot.run(TOKEN)
