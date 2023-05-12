@@ -1,0 +1,22 @@
+{
+  "blacklist": {
+      "name": "/blacklist [add/remove/list] [user]",
+      "description": "Add, remove or list users in the blacklist. (Administrator only)"
+  },
+  "omikuzi": {
+      "name": "/omikuzi",
+      "description": "Draw a fortune."
+  },
+  "nya": {
+      "name": "/nya",
+      "description": "Send a random cat message."
+  },
+  "members": {
+      "name": "/members",
+      "description": "List members currently in voice channel."
+  },
+  "help": {
+      "name": "/help",
+      "description": "Show this help message."
+  }
+}

@@ -1,12 +1,13 @@
 import asyncio
 import os
 import random
+import json
 
 import discord
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
-TOKEN = os.environ["DISCORD_TOKEN"]
+TOKEN = os.environ["VCtoTEXT_TOKEN"]
 
 BLACKLIST_FILE = "blacklist.txt"
 in_voice_member = set()
@@ -113,11 +114,13 @@ async def members(ctx):
 bot.remove_command('help')
 @bot.command()
 async def help(ctx):
-    """Show this help message."""
+    """Show the bot's help message."""
+    with open("commands.json") as f:
+        commands = json.load(f)
+
     embed = discord.Embed(title="Help", description="List of commands", color=discord.Color.blue())
-    embed.add_field(name="/blacklist [add/remove/list] [user]", value="Add, remove or list users in the blacklist. (Administrator only)", inline=False)
-    embed.add_field(name="/omikuzi", value="Draw a fortune.", inline=False)
-    embed.add_field(name="/nya", value="Send a random cat message.", inline=False)
-    embed.add_field(name="/members", value="List members currently in voice channel.", inline=False)
-    embed.add_field(name="/help", value="Show this help message.", inline=False)
+    for command in commands.values():
+        embed.add_field(name=command["name"], value=command["description"], inline=False)
     await ctx.send(embed=embed)
+
+bot.run(TOKEN)
