@@ -2,14 +2,16 @@ import asyncio
 import os
 import random
 import json
+import datetime
 
 import discord
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
-TOKEN = os.environ["VCtoTEXT_TOKEN"]
+TOKEN = os.environ["DISCORD_TOKEN"]
 
-BLACKLIST_FILE = "blacklist.txt"
+BLACKLIST_FILE = "./files/blacklist.txt"
+COMMANDS = "./files/commands.json"
 in_voice_member = set()
 
 
@@ -75,10 +77,22 @@ async def manage_role(member, id):
 async def on_voice_state_update(member, before, after):
     """Handle voice state updates."""
     if before.channel is None and after.channel is not None and member not in in_voice_member:
+        save_log(member, 1)
         await manage_role(member, 1)
     if member in in_voice_member and after.channel is None:
+        save_log(member, 2)
         await asyncio.sleep(60)
         await manage_role(member, 2)
+
+
+def save_log(member, id):
+    """Save the log."""
+    inout = "入室" if id == 1 else "退室"
+    now = lambda: datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+    with open("./files/log.txt", "a") as f:
+        f.write(f"[{now()}] {member.name}が{inout}しました。\n")
+
+
 
 
 async def send_embed(ctx, title, description, color=discord.Color.blue(), fields=None):
@@ -115,7 +129,7 @@ bot.remove_command('help')
 @bot.command()
 async def help(ctx):
     """Show the bot's help message."""
-    with open("commands.json") as f:
+    with open(COMMANDS) as f:
         commands = json.load(f)
 
     embed = discord.Embed(title="Help", description="List of commands", color=discord.Color.blue())
