@@ -12,6 +12,7 @@ TOKEN = os.environ["DISCORD_TOKEN"]
 
 BLACKLIST_FILE = "./files/blacklist.txt"
 COMMANDS = "./files/commands.json"
+LOG_FILE = "./files/log.txt"
 in_voice_member = set()
 
 
@@ -89,7 +90,7 @@ def save_log(member, id):
     """Save the log."""
     inout = "入室" if id == 1 else "退室"
     now = lambda: datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    with open("./files/log.txt", "a") as f:
+    with open(LOG_FILE, "a") as f:
         f.write(f"[{now()}] {member.name}が{inout}しました。\n")
 
 
