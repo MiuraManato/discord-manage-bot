@@ -94,7 +94,7 @@ def save_log(member, id) -> None:
     text = "入室" if id == 1 else "退室"
     now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     with open(LOG_FILE_PATH, "a") as f:
-        f.write(f"[{now()}] {member.name}が{text}しました。\n")
+        f.write(f"[{now}] {member.name}が{text}しました。\n")
 
 
 async def send_embed(ctx, title, description, color=discord.Color.blue(), fields=None) -> None:
