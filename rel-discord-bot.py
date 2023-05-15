@@ -92,7 +92,7 @@ async def on_voice_state_update(member, before, after) -> None:
 def save_log(member, id) -> None:
     """ログを保存する"""
     text = "入室" if id == 1 else "退室"
-    now = lambda: datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+    now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     with open(LOG_FILE_PATH, "a") as f:
         f.write(f"[{now()}] {member.name}が{text}しました。\n")
 
