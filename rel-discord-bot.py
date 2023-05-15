@@ -51,7 +51,6 @@ async def blacklist(ctx, *args) -> None:
             await send_embed(ctx, "Blacklist Members", "Here are the members in the blacklist.", fields=fields)
 
 
-
 def check_blacklist(member) -> bool:
     """メンバーがブラックリストに入っているか確認"""
     with open(BLACKLIST_FILE_PATH) as f:
