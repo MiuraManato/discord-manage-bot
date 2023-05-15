@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
-TOKEN = os.environ["DISCORD_TOKEN"]
+TOKEN = os.environ["VCtoTEXT_TOKEN"]
 
 BLACKLIST_FILE = "./files/blacklist.txt"
 COMMANDS = "./files/commands.json"
@@ -29,13 +29,14 @@ async def blacklist(ctx, *args):
         return
 
     if args[0] == "add":
+        member_name = " ".join(args[1:])
         with open(BLACKLIST_FILE, "a") as f:
-            f.write(f"{args[1]}\n")
+            f.write(f"{member_name}\n")
     elif args[0] == "remove":
         with open(BLACKLIST_FILE, "r") as f:
             lines = f.readlines()
             for line in lines:
-                if args[1] in line:
+                if " ".join(args[1:]) in line:
                     lines.remove(line)
         with open(BLACKLIST_FILE, "w") as f:
             f.writelines(lines)
@@ -43,12 +44,8 @@ async def blacklist(ctx, *args):
         with open(BLACKLIST_FILE, "r") as f:
             lines = f.read().splitlines()
             fields = {f"Member {i+1}": member for i, member in enumerate(lines)}
-            await send_embed(
-                ctx,
-                "Blacklist Members",
-                "Here are the members in the blacklist.",
-                fields=fields,
-            )
+            await send_embed(ctx, "Blacklist Members", "Here are the members in the blacklist.", fields=fields)
+
 
 
 def check_blacklist(member):
@@ -92,8 +89,6 @@ def save_log(member, id):
     now = lambda: datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     with open(LOG_FILE, "a") as f:
         f.write(f"[{now()}] {member.name}が{inout}しました。\n")
-
-
 
 
 async def send_embed(ctx, title, description, color=discord.Color.blue(), fields=None):
