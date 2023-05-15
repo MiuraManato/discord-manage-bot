@@ -52,13 +52,13 @@ async def blacklist(ctx, *args) -> None:
 
 
 
-def check_blacklist(member : str) -> bool:
+def check_blacklist(member) -> bool:
     """メンバーがブラックリストに入っているか確認"""
     with open(BLACKLIST_FILE_PATH) as f:
         return any(member == line.strip() for line in f)
 
 
-async def manage_role(member: str, id: int) -> None:
+async def manage_role(member, id) -> None:
     """ロール管理.
     id = 1 : ロールを付与する
     id = 2 : ロールを削除する
