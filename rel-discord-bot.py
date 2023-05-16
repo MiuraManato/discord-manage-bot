@@ -9,7 +9,7 @@ from discord.ext import commands
 
 # Botの設定
 bot = commands.Bot(command_prefix="/", intents=discord.Intents.all())
-TOKEN = os.environ["VCtoTEXT_TOKEN"]
+TOKEN = os.environ["DISCORD_TOKEN"]
 
 # ファイルパスの設定
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
