@@ -1,22 +1,22 @@
 {
   "blacklist": {
       "name": "/blacklist [add/remove/list] [user]",
-      "description": "Add, remove or list users in the blacklist. (Administrator only)"
+      "description": "メンバーのブラックリストへの追加、削除、一覧表示 (管理者限定)"
   },
   "omikuzi": {
       "name": "/omikuzi",
-      "description": "Draw a fortune."
+      "description": "おみくじを引きます"
   },
   "nya": {
       "name": "/nya",
-      "description": "Send a random cat message."
+      "description": "ねこが鳴きます"
   },
   "members": {
       "name": "/members",
-      "description": "List members currently in voice channel."
+      "description": "コマンド使用者のいるボイスチャンネルのメンバーを表示"
   },
   "help": {
       "name": "/help",
-      "description": "Show this help message."
+      "description": "このメッセージを表示"
   }
 }
