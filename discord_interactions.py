@@ -17,6 +17,18 @@ BLACKLIST_FILE_PATH = "./files/blacklist.txt"
 COMMANDS_FILE_PATH = "./files/commands.json"
 LOG_FILE_PATH = "./files/log.txt"
 
+def read_blacklist() -> set:
+    """ブラックリストを読み込んでsetで返す"""
+    with open(BLACKLIST_FILE_PATH, "r") as f:
+        return set(line.strip() for line in f)
+
+def read_commands() -> dict:
+    """コマンド一覧を読み込んでdictで返す"""
+    with open(COMMANDS_FILE_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+blacklist = read_blacklist()
+commands = read_commands()
 
 @bot.event
 async def on_ready():
@@ -27,6 +39,7 @@ async def on_ready():
 @bot.event
 async def on_voice_state_update(member, before, after):
     """ボイスステータスハンドルを受け取り処理する"""
+    global blacklist
     # 直前までボイスチャンネルにいない、直後にボイスチャンネルにいる、通話中ではない場合に実行
     if before.channel is None and after.channel is not None:
         save_log(member, 1)
@@ -37,8 +50,7 @@ async def on_voice_state_update(member, before, after):
         save_log(member, 2)
         print(f"{member.name}が通話から退出しました")
         await asyncio.sleep(60)
-        await manage_role(member, 2)
-
+        await manage_role(member, 2, blacklist)
 
 # =============以下コマンド=============
 
@@ -53,11 +65,13 @@ async def on_voice_state_update(member, before, after):
 @discord.app_commands.describe(user="ユーザー名   例:USER#0000")
 async def blacklist_command(interaction: discord.Interaction, method: str, user: str = None) -> None:
     """メンバーのブラックリストへの追加、削除、一覧表示"""
+    global blacklist
     if method in ["add", "remove"] and user is None:
         await interaction.response.send_message("ユーザー名を指定してください", ephemeral=True)
     if method == "add":
         with open(BLACKLIST_FILE_PATH, "a") as f:
             f.write(f"{user}\n")
+        blacklist.add(user)
         await interaction.response.send_message(f"{user}をブラックリストに追加しました", ephemeral=True)
     elif method == "remove":
         with open(BLACKLIST_FILE_PATH, "r") as f:
@@ -65,12 +79,15 @@ async def blacklist_command(interaction: discord.Interaction, method: str, user:
             lines = [line for line in lines if line.strip() != user]
         with open(BLACKLIST_FILE_PATH, "w") as f:
             f.writelines(lines)
+        blacklist.discard(user)
         await interaction.response.send_message(f"{user}をブラックリストから削除しました", ephemeral=True)
     elif method == "list":
-        with open(BLACKLIST_FILE_PATH, "r") as f:
-            lines = f.read().splitlines()
-            fields = {f"Member {i+1}": member for i, member in enumerate(lines)}
-            await send_embed(interaction, title="ブラックリスト一覧", description="", fields=fields, ephemeral=True)
+        fields = {"name": "blacklist", "value": "\n".join(blacklist) or "ブラックリストにはまだ誰もいません", "inline": False}
+        embed = discord.Embed(title="ブラックリスト一覧", color=0xff0000)
+        embed.add_field(**fields)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
 
 
 @tree.command(name="nya", description="ねこが鳴きます")
