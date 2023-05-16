@@ -51,7 +51,7 @@ async def on_voice_state_update(member, before, after):
         discord.app_commands.Choice(name="list", value="list")
     ])
 @discord.app_commands.describe(user="ユーザー名   例:USER#0000")
-async def blacklist_command(interaction: discord.Interaction, method: str, user: str=None ) -> None:
+async def blacklist_command(interaction: discord.Interaction, method: str, user: str = None) -> None:
     """メンバーのブラックリストへの追加、削除、一覧表示"""
     if method in ["add", "remove"] and user is None:
         await interaction.response.send_message("ユーザー名を指定してください", ephemeral=True)
@@ -65,7 +65,7 @@ async def blacklist_command(interaction: discord.Interaction, method: str, user:
             lines = [line for line in lines if line.strip() != user]
         with open(BLACKLIST_FILE_PATH, "w") as f:
             f.writelines(lines)
-        await interaction.response.send_message(f"{user}をブラックリストから削除しました",ephemeral=True)
+        await interaction.response.send_message(f"{user}をブラックリストから削除しました", ephemeral=True)
     elif method == "list":
         with open(BLACKLIST_FILE_PATH, "r") as f:
             lines = f.read().splitlines()
@@ -73,24 +73,24 @@ async def blacklist_command(interaction: discord.Interaction, method: str, user:
             await send_embed(interaction, title="ブラックリスト一覧", description="", fields=fields, ephemeral=True)
 
 
-@tree.command(name="nya",description="ねこが鳴きます")
+@tree.command(name="nya", description="ねこが鳴きます")
 async def nya_command(interaction: discord.Interaction) -> None:
     message = random.choice(["にゃーん", "みゃ", "にゃう", "しゃーっ", "みゃおん", "nyancat"])
-    await interaction.response.send_message(message,ephemeral=False) if message != "nyancat" else await interaction.response.send_message(file=discord.File("nyancat.jpg"), ephemeral=False)
+    await interaction.response.send_message(message, ephemeral=False) if message != "nyancat" else await interaction.response.send_message(file=discord.File("nyancat.jpg"), ephemeral=False)
 
 
-@tree.command(name="omikuzi",description="おみくじを引く")
+@tree.command(name="omikuzi", description="おみくじを引く")
 async def omikuzi_command(interaction: discord.Interaction) -> None:
     omikuzi = random.choice(["大吉", "吉", "半吉", "凶", "半凶", "大凶"])
-    await interaction.response.send_message(omikuzi,ephemeral=False)
+    await interaction.response.send_message(omikuzi, ephemeral=False)
 
 
-@tree.command(name="member",description="コマンド使用者の通話にいるメンバー一覧を表示")
+@tree.command(name="member", description="コマンド使用者の通話にいるメンバー一覧を表示")
 async def member_command(interaction: discord.Interaction) -> None:
     """コマンド使用者の通話にいるメンバー一覧を表示"""
     # コマンド使用者の通話にいるか判定する
     if interaction.user.voice is None:
-        await interaction.response.send_message("ボイスチャンネルに接続中のときにのみ使用可能です",ephemeral=True)
+        await interaction.response.send_message("ボイスチャンネルに接続中のときにのみ使用可能です", ephemeral=True)
         return
     # コマンド使用者がいる通話のメンバーを取得する
     members = interaction.user.voice.channel.members
