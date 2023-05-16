@@ -27,6 +27,7 @@ def read_commands() -> dict:
     with open(COMMANDS_FILE_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
+
 blacklist = read_blacklist()
 commands = read_commands()
 
@@ -50,7 +51,7 @@ async def on_voice_state_update(member, before, after):
         save_log(member, 2)
         print(f"{member.name}が通話から退出しました")
         await asyncio.sleep(60)
-        await manage_role(member, 2, blacklist)
+        await manage_role(member, 2)
 
 # =============以下コマンド=============
 
@@ -86,8 +87,6 @@ async def blacklist_command(interaction: discord.Interaction, method: str, user:
         embed = discord.Embed(title="ブラックリスト一覧", color=0xff0000)
         embed.add_field(**fields)
         await interaction.response.send_message(embed=embed, ephemeral=True)
-
-
 
 
 @tree.command(name="nya", description="ねこが鳴きます")
