@@ -27,7 +27,6 @@ def read_commands() -> dict:
     with open(COMMANDS_FILE_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
-
 blacklist = read_blacklist()
 commands = read_commands()
 
@@ -89,10 +88,12 @@ async def blacklist_command(interaction: discord.Interaction, method: str, user:
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
+
+
 @tree.command(name="nya", description="ねこが鳴きます")
 async def nya_command(interaction: discord.Interaction) -> None:
     message = random.choice(["にゃーん", "みゃ", "にゃう", "しゃーっ", "みゃおん", "nyancat"])
-    await interaction.response.send_message(message, ephemeral=False) if message != "nyancat" else await interaction.response.send_message(file=discord.File("nyancat.jpg"), ephemeral=False)
+    await interaction.response.send_message(message, ephemeral=False) if message != "nyancat" else await interaction.response.send_message(file=discord.File("nyancat.gif"), ephemeral=False)
 
 
 @tree.command(name="omikuzi", description="おみくじを引く")
