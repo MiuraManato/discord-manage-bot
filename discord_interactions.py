@@ -22,10 +22,12 @@ def read_blacklist() -> set:
     with open(BLACKLIST_FILE_PATH, "r") as f:
         return set(line.strip() for line in f)
 
+
 def read_commands() -> dict:
     """コマンド一覧を読み込んでdictで返す"""
     with open(COMMANDS_FILE_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 blacklist = read_blacklist()
 commands = read_commands()
