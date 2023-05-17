@@ -30,6 +30,7 @@ def read_commands() -> dict:
 blacklist = read_blacklist()
 commands = read_commands()
 
+
 @bot.event
 async def on_ready():
     print(f"Bot logged in as {bot.user}")
@@ -86,8 +87,6 @@ async def blacklist_command(interaction: discord.Interaction, method: str, user:
         embed = discord.Embed(title="ブラックリスト一覧", color=0xff0000)
         embed.add_field(**fields)
         await interaction.response.send_message(embed=embed, ephemeral=True)
-
-
 
 
 @tree.command(name="nya", description="ねこが鳴きます")
