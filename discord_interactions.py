@@ -3,12 +3,13 @@ import os
 import random
 import json
 import datetime
+import subprocess
 
 import discord
 from discord import app_commands
 
 
-TOKEN = os.environ['DISCORD_TOKEN']
+TOKEN = os.environ['VCtoTEXT_TOKEN']
 bot = discord.Client(intents=discord.Intents.all())
 tree = app_commands.CommandTree(bot)
 
@@ -114,6 +115,26 @@ async def member_command(interaction: discord.Interaction) -> None:
     members = interaction.user.voice.channel.members
     member_list = "\n".join([member.name for member in members])
     await send_embed(interaction, "ボイスチャンネルに接続中のメンバー一覧", member_list)
+
+
+@tree.command(name="minecraft", description="Minecraftのサーバーを起動")
+@discord.app_commands.choices(
+    method=[
+        discord.app_commands.Choice(name="サバイバル", value="1.19.4"),
+        discord.app_commands.Choice(name="カタン", value="カタン"),
+    ]
+)
+@discord.app_commands.describe()
+async def minecraft_command(interaction: discord.Interaction, server: str) -> None:
+    """Minecraftのサーバーを起動"""
+    if interaction.user.name not in "ReL":
+        await interaction.response.send_message("このコマンドは使用できません", ephemeral=True)
+        return
+
+    server_name = server
+    path = f"C:\Minecraft server\{server_name}\start.bat"
+    subprocess.Popen(path)
+    await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
 
 
 @tree.command(name="help", description="コマンド一覧を表示")
