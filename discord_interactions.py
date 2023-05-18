@@ -38,6 +38,7 @@ commands = read_commands()
 async def on_ready():
     print(f"Bot logged in as {bot.user}")
     await tree.sync()
+    # await tree.sync(guild=discord.Object(id=int(os.environ['GUILD_ID'])))
 
 
 @bot.event
@@ -119,7 +120,7 @@ async def member_command(interaction: discord.Interaction) -> None:
 
 @tree.command(name="minecraft", description="Minecraftのサーバーを起動")
 @discord.app_commands.choices(
-    method=[
+    server=[
         discord.app_commands.Choice(name="サバイバル", value="1.19.4"),
         discord.app_commands.Choice(name="カタン", value="カタン"),
     ]
@@ -131,8 +132,7 @@ async def minecraft_command(interaction: discord.Interaction, server: str) -> No
         await interaction.response.send_message("このコマンドは使用できません", ephemeral=True)
         return
 
-    server_name = server
-    path = f"C:\Minecraft server\{server_name}\start.bat"
+    path = rf"C:\Minecraft server\{server}\start.bat"
     subprocess.Popen(path)
     await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
 
