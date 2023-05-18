@@ -9,7 +9,7 @@ import discord
 from discord import app_commands
 
 
-TOKEN = os.environ['VCtoTEXT_TOKEN']
+TOKEN = os.environ['DISCORD_TOKEN']
 bot = discord.Client(intents=discord.Intents.all())
 tree = app_commands.CommandTree(bot)
 
@@ -125,7 +125,7 @@ async def member_command(interaction: discord.Interaction) -> None:
         discord.app_commands.Choice(name="カタン", value="カタン"),
     ]
 )
-@discord.app_commands.describe()
+@discord.app_commands.describe(server="サーバー名")
 async def minecraft_command(interaction: discord.Interaction, server: str) -> None:
     """Minecraftのサーバーを起動"""
     if interaction.user.name not in "ReL":
