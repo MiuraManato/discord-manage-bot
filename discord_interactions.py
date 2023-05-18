@@ -125,16 +125,31 @@ async def member_command(interaction: discord.Interaction) -> None:
         discord.app_commands.Choice(name="カタン", value="カタン"),
     ]
 )
+@discord.app_commands.cheices(
+    command=[
+        discord.app_commands.Choice(name="start", value="start"),
+        discord.app_commands.Choice(name="stop", value="stop"),
+    ]
+)
+@discord.app_commands.describe(command="コマンド")
 @discord.app_commands.describe(server="サーバー名")
-async def minecraft_command(interaction: discord.Interaction, server: str) -> None:
+async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
     """Minecraftのサーバーを起動"""
     if interaction.user.name not in "ReL":
         await interaction.response.send_message("このコマンドは使用できません", ephemeral=True)
         return
 
-    path = rf"C:\Minecraft server\{server}\start.bat"
-    subprocess.Popen(path)
-    await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
+    if command == "start":
+        isStarted = True
+        path = rf"C:\Minecraft server\{server}\start.bat"
+        p = subprocess.Popen(path, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
+    elif command == "stop" and isStarted:
+        isStarted = False
+        p.stdin.write(command.encode('utf-8'))
+        await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
+    else:
+        await interaction.response.send_message("コマンドが正しくありません", ephemeral=True)
 
 
 @tree.command(name="help", description="コマンド一覧を表示")
