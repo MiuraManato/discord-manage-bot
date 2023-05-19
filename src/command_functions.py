@@ -7,6 +7,7 @@ from utils import send_embed, read_blacklist
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
 COMMANDS_FILE_PATH = "./files/commands.json"
 LOG_FILE_PATH = "./files/log.txt"
+isServer = False
 
 blacklist = read_blacklist()
 
@@ -76,8 +77,12 @@ async def minecraft_command(interaction: discord.Interaction, command: str, serv
             await interaction.response.send_message("Minecraftサーバーの起動に失敗しました", ephemeral=True)
 
     elif command is None and isServer:
+        command = "stop"
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
+    elif command == "status":
+        status = "起動中" if isServer else "停止中"
+        await interaction.response.send_message(status, ephemeral=True)
     else:
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
