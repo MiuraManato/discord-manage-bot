@@ -1,4 +1,3 @@
-import asyncio
 from utils import save_log, manage_role
 
 async def voice_state_update_handler(member, before, after):

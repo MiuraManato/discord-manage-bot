@@ -41,5 +41,5 @@ def setup_commands(tree):
     )
     @discord.app_commands.describe(server="サーバー名")
     @discord.app_commands.describe(command="Minecraftのコマンドを送信します")
-    async def _minecrft_command(interaction: discord.Interaction,server: str, command: str = None) -> None:
+    async def _minecrft_command(interaction: discord.Interaction, server: str, command: str = None) -> None:
         await minecraft_command(interaction, server, command)
