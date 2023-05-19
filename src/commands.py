@@ -30,4 +30,3 @@ def setup_commands(tree):
     @tree.command(name="help", description="コマンド一覧を表示")
     async def _help_command(interaction: discord.Interaction) -> None:
         await help_command(interaction)
-
