@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from command_functions import blacklist_command, nya_command, omikuzi_command, member_command, help_command
+from command_functions import blacklist_command, nya_command, omikuzi_command, member_command, help_command, minecraft_command
 
 def setup_commands(tree):
     @tree.command(name="blacklist", description="メンバーのブラックリストへの追加、削除、一覧表示")
@@ -30,3 +30,9 @@ def setup_commands(tree):
     @tree.command(name="help", description="コマンド一覧を表示")
     async def _help_command(interaction: discord.Interaction) -> None:
         await help_command(interaction)
+
+    @tree.command(name="minecraft", description="Minecraftのサーバーを起動、停止します")
+    @app_commands.default_permissions(administrator=True)
+    @discord.app_commands.describe(command="Minecraftのコマンドを送信します")
+    async def _minecrft_command(interaction: discord.Interaction, command: str = None) -> None:
+        await minecraft_command(interaction, command)
