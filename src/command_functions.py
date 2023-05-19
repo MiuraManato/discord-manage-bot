@@ -7,7 +7,6 @@ from utils import send_embed, read_blacklist
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
 COMMANDS_FILE_PATH = "./files/commands.json"
 LOG_FILE_PATH = "./files/log.txt"
-isServer = False
 
 blacklist = read_blacklist()
 
@@ -65,20 +64,20 @@ async def help_command(interaction: discord.Interaction) -> None:
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
-async def minecraft_command(interaction: discord.Interaction, command: str) -> None:
+async def minecraft_command(interaction: discord.Interaction, command: str, server: str = "1.19.4") -> None:
     """Minecraftサーバーの操作"""
-    if command == None and not isServer:
+    if command is None and not isServer:
         isServer = True
-        path = rf"C:\Minecraft server\1.19.4\start.bat"
+        path = rf"C:\Minecraft server\{server}\start.bat"
         try:
             p = subprocess.Popen(path, stdin=subprocess.PIPE, shell=True)
             await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
         except FileNotFoundError:
             await interaction.response.send_message("Minecraftサーバーの起動に失敗しました", ephemeral=True)
 
-    elif command == None and isServer:
+    elif command is None and isServer:
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
-    else :
+    else:
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
