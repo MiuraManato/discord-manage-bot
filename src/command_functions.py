@@ -67,6 +67,7 @@ async def help_command(interaction: discord.Interaction) -> None:
 
 async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
     """Minecraftサーバーの操作"""
+    global isServer
     if (command is None and not isServer) or (command == "start" and isServer):
         isServer = True
         path = rf"C:\Minecraft server\{server}\start.bat"
