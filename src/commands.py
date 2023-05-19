@@ -33,6 +33,13 @@ def setup_commands(tree):
 
     @tree.command(name="minecraft", description="Minecraftのサーバーを起動、停止します")
     @app_commands.default_permissions(administrator=True)
+    @discord.app_commands.choices(
+        server=[
+            discord.app_commands.Choice(name="survival", value="survival"),
+            discord.app_commands.Choice(name="catan", value="catan")
+        ]
+    )
+    @discord.app_commands.describe(server="サーバー名")
     @discord.app_commands.describe(command="Minecraftのコマンドを送信します")
-    async def _minecrft_command(interaction: discord.Interaction, command: str = None) -> None:
-        await minecraft_command(interaction, command)
+    async def _minecrft_command(interaction: discord.Interaction,server: str, command: str = None) -> None:
+        await minecraft_command(interaction, server, command)

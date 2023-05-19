@@ -9,5 +9,4 @@ async def voice_state_update_handler(member, before, after):
     if before.channel is not None and after.channel is None:
         save_log(member, 2)
         print(f"{member.name}が通話から退出しました")
-        await asyncio.sleep(60)
         await manage_role(member, 2)

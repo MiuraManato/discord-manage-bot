@@ -65,7 +65,7 @@ async def help_command(interaction: discord.Interaction) -> None:
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
-async def minecraft_command(interaction: discord.Interaction, command: str, server: str = "1.19.4") -> None:
+async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
     """Minecraftサーバーの操作"""
     if command is None and not isServer:
         isServer = True
@@ -79,6 +79,7 @@ async def minecraft_command(interaction: discord.Interaction, command: str, serv
     elif command is None and isServer:
         command = "stop"
         p.stdin.write(command.encode('utf-8'))
+        isServer = False
         await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
     elif command == "status":
         status = "起動中" if isServer else "停止中"
