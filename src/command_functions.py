@@ -67,7 +67,7 @@ async def help_command(interaction: discord.Interaction) -> None:
 
 async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
     """Minecraftサーバーの操作"""
-    if command is None and not isServer:
+    if (command is None and not isServer) or (command == "start" and isServer):
         isServer = True
         path = rf"C:\Minecraft server\{server}\start.bat"
         try:
@@ -76,7 +76,7 @@ async def minecraft_command(interaction: discord.Interaction, server: str, comma
         except FileNotFoundError:
             await interaction.response.send_message("Minecraftサーバーの起動に失敗しました", ephemeral=True)
 
-    elif command is None and isServer:
+    elif (command is None and isServer) or (command == "stop" and not isServer):
         command = "stop"
         p.stdin.write(command.encode('utf-8'))
         isServer = False
