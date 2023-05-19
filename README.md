@@ -1,27 +1,16 @@
-# discordpy-startup
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-
-- Herokuでdiscord.pyを始めるテンプレートです。
-- Use Template からご利用ください。
-- 使い方はこちら： [Discord Bot 最速チュートリアル【Python&Heroku&GitHub】 - Qiita](https://qiita.com/1ntegrale9/items/aa4b373e8895273875a8)
-
 ## 各種ファイル情報
 
+### discord_interactions.py
+スラッシュコマンドに対応したDiscord Botのアプリケーションファイルです
+
+### src
+discord_interactions.pyを分割したファイルですクローンして使用する場合はこちらをお使いください。
+
 ### rel-discord-bot.py
-PythonによるDiscordBotのアプリケーションファイルです。
+PythonによるDiscordBotのアプリケーションファイルです。現在更新していません。
 
 ### requirements.txt
 使用しているPythonのライブラリ情報の設定ファイルです。
-
-### Procfile
-Herokuでのプロセス実行コマンドの設定ファイルです。
-
-### runtime.txt
-Herokuでの実行環境の設定ファイルです。
-
-### app.json
-Herokuデプロイボタンの設定ファイルです。
 
 ### .github/workflows/flake8.yaml
 GitHub Actions による自動構文チェックの設定ファイルです。
