@@ -5,7 +5,7 @@ from handlers import voice_state_update_handler
 from commands import setup_commands
 from utils import read_blacklist, read_commands
 
-TOKEN = os.environ['VCtoTEXT_TOKEN']
+TOKEN = os.environ['SBA_TOKEN']
 bot = discord.Client(intents=discord.Intents.all())
 tree = app_commands.CommandTree(bot)
 
