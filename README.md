@@ -1,10 +1,13 @@
 ## 各種ファイル情報
 
+### src
+botのソースコードです。最新版です。
+
 ### discord_interactions.py
-スラッシュコマンドに対応したDiscord Botのアプリケーションファイルです
+スラッシュコマンドに対応したDiscord Botのアプリケーションファイルです。削除予定です。
 
 ### rel-discord-bot.py
-PythonによるDiscordBotのアプリケーションファイルです。現在更新していません。
+PythonによるDiscordBotのアプリケーションファイルです。削除予定です。
 
 ### requirements.txt
 使用しているPythonのライブラリ情報の設定ファイルです。
