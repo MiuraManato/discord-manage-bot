@@ -88,12 +88,6 @@ async def minecraft_command(interaction: discord.Interaction, server: str, comma
         status = "起動中" if isServer else "停止中"
         await interaction.response.send_message(status, ephemeral=True)
     else:
-        if process is not None:  # make sure process is defined before calling communicate
-            await process.communicate(command.encode('utf-8') + b'\n') # send the command
-            await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
-        else:
-            await interaction.response.send_message("Minecraftサーバーが起動していません。", ephemeral=True)
-
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
 
