@@ -106,5 +106,5 @@ async def gpt_command(interaction: discord.Interaction, message: str) -> None:
     )
     message = message[:15] + "..." if len(message) > 15 else message
     answer = response["choices"][0]["message"]["content"]
-    await interaction.followup.send(f"```質問内容: {message}\n{answer}```", ephemeral=True)
+    await interaction.followup.send(f"```質問内容: {message}\n\n{answer}```", ephemeral=True)
     print(answer)
