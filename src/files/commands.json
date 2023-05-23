@@ -1,0 +1,22 @@
+{
+    "omikuzi": {
+        "name": "/omikuzi",
+        "description": "おみくじを引きます"
+    },
+    "nya": {
+        "name": "/nya",
+        "description": "ねこが鳴きます"
+    },
+    "members": {
+        "name": "/members",
+        "description": "コマンド使用者のいるボイスチャンネルのメンバーを表示"
+    },
+    "help": {
+        "name": "/help",
+        "description": "このメッセージを表示"
+    },
+    "gpt": {
+        "name": "/gpt",
+        "description": "AIが質問に答えます。情報は2021年までしかありません。"
+    }
+}
