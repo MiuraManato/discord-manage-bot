@@ -2,6 +2,8 @@ import random
 import discord
 import json
 import subprocess
+import openai
+import os
 from utils import send_embed, read_blacklist
 
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
@@ -88,3 +90,17 @@ async def minecraft_command(interaction: discord.Interaction, server: str, comma
     else:
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
+
+async def gpt_command(interaction: discord.Interaction, message: str) -> None:
+    """GPT-3を使用したコマンド"""
+    await interaction.response.defer(thinking=True)
+    openai.api_key = os.environ['OPENAI_APIKEY']
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=message,
+        temperature=0.7,
+        max_tokens=2000
+    )
+    message = message[:15] + "..." if len(message) > 15 else message
+    await interaction.followup.send(f"```質問内容: {message}\n{response.choices[0].text}```", ephemeral=True)
+    print(response.choices[0].text)
