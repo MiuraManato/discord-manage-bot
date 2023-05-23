@@ -2,22 +2,14 @@ import random
 import discord
 import json
 import subprocess
-<<<<<<< HEAD
-import asyncio
-=======
 import openai
 import os
->>>>>>> master
 from utils import send_embed, read_blacklist
 
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
 COMMANDS_FILE_PATH = "./files/commands.json"
 LOG_FILE_PATH = "./files/log.txt"
 isServer = False
-<<<<<<< HEAD
-process = None
-=======
->>>>>>> master
 
 blacklist = read_blacklist()
 
@@ -75,32 +67,6 @@ async def help_command(interaction: discord.Interaction) -> None:
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
-<<<<<<< HEAD
-import asyncio
-import subprocess
-
-import asyncio
-import subprocess
-
-async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
-    """Minecraftサーバーの操作"""
-    global isServer, process
-    if (command is None and not isServer) or (command == "start" and not isServer):
-        isServer = True
-        path = rf"C:\Minecraft server\{server}\start.bat"
-        try:
-            print(path)
-            process = await asyncio.create_subprocess_shell('start "" "' + path + '"', cwd=r"C:\Minecraft server\\" + server, stdin=subprocess.PIPE)
-            await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
-        except FileNotFoundError:
-            await interaction.response.send_message("Minecraftサーバーの起動に失敗しました", ephemeral=True)
-    elif (command is None and isServer) or (command == "stop" and not isServer):
-        command = "stop"
-        if process is not None:  # make sure process is defined before calling communicate
-            await process.communicate(b'stop\n') # send the stop command
-            process = None
-            isServer = False
-=======
 async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
     """Minecraftサーバーの操作"""
     global isServer
@@ -117,20 +83,17 @@ async def minecraft_command(interaction: discord.Interaction, server: str, comma
         command = "stop"
         p.stdin.write(command.encode('utf-8'))
         isServer = False
->>>>>>> master
         await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
     elif command == "status":
         status = "起動中" if isServer else "停止中"
         await interaction.response.send_message(status, ephemeral=True)
     else:
-<<<<<<< HEAD
         if process is not None:  # make sure process is defined before calling communicate
             await process.communicate(command.encode('utf-8') + b'\n') # send the command
             await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
         else:
             await interaction.response.send_message("Minecraftサーバーが起動していません。", ephemeral=True)
 
-=======
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
 
@@ -151,4 +114,3 @@ async def gpt_command(interaction: discord.Interaction, message: str) -> None:
     answer = response["choices"][0]["message"]["content"]
     await interaction.followup.send(f"```質問内容: {message}\n\n{answer}```", ephemeral=True)
     print(answer)
->>>>>>> master
