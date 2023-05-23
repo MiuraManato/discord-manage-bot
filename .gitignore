@@ -103,5 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 .vscode/settings.json
-files/blacklist.txt
-files/log.txt
+discord_doc.md
+FETCH_HEAD
+git_memo.md
+nyancat.jpg
