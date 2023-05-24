@@ -91,20 +91,22 @@ async def minecraft_command(interaction: discord.Interaction, server: str, comma
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
 
-async def gpt_command(interaction: discord.Interaction, message: str) -> None:
+async def gpt_command(interaction: discord.Interaction, question: str) -> None:
     """GPT-3を使用したコマンド"""
     await interaction.response.defer(thinking=True)
     openai.api_key = os.environ['OPENAI_APIKEY']
     prompt = [
-        {"role": "user", "content": message}
+        {"role": "user", "content": question}
     ]
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=prompt,
-        temperature=0.7,
-        max_tokens=4000
-    )
-    message = message[:15] + "..." if len(message) > 15 else message
-    answer = response["choices"][0]["message"]["content"]
-    await interaction.followup.send(f"```質問内容: {message}\n\n{answer}```", ephemeral=True)
-    print(answer)
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=prompt,
+            temperature=0.7,
+            max_tokens=4000
+        )
+        message = question[:15] + "..." if len(question) > 15 else question
+        answer = response["choices"][0]["message"]["content"]
+        await interaction.followup.send(f"```質問内容: {message}\n\n{answer}```", ephemeral=True)
+    except:
+        await interaction.followup.send("エラーが発生しました。再度実行してください", ephemeral=True)

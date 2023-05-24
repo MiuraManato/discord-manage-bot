@@ -48,5 +48,5 @@ def setup_commands(tree):
 
     @tree.command(name="gpt", description="GPTを使用できます")
     @app_commands.describe(message="GPTへの質問内容")
-    async def _gpt_command(interaction: discord.Interaction, message: str) -> None:
-        await gpt_command(interaction, message)
+    async def _gpt_command(interaction: discord.Interaction, question: str) -> None:
+        await gpt_command(interaction, question)
