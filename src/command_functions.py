@@ -1,7 +1,6 @@
 import random
 import discord
 import json
-import subprocess
 import openai
 import os
 from utils import send_embed, read_blacklist
@@ -67,44 +66,38 @@ async def help_command(interaction: discord.Interaction) -> None:
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
-async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
-    """Minecraftサーバーの操作"""
-    global isServer
-    if (command is None and not isServer) or (command == "start" and isServer):
-        isServer = True
-        path = rf"C:\Minecraft server\{server}\start.bat"
-        try:
-            p = subprocess.Popen(path, stdin=subprocess.PIPE, shell=True)
-            await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
-        except FileNotFoundError:
-            await interaction.response.send_message("Minecraftサーバーの起動に失敗しました", ephemeral=True)
-
-    elif (command is None and isServer) or (command == "stop" and not isServer):
-        command = "stop"
-        p.stdin.write(command.encode('utf-8'))
-        isServer = False
-        await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
-    elif command == "status":
-        status = "起動中" if isServer else "停止中"
-        await interaction.response.send_message(status, ephemeral=True)
-    else:
-        p.stdin.write(command.encode('utf-8'))
-        await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
-
-async def gpt_command(interaction: discord.Interaction, message: str) -> None:
+async def gpt_command(interaction: discord.Interaction, question: str) -> None:
     """GPT-3を使用したコマンド"""
     await interaction.response.defer(thinking=True)
     openai.api_key = os.environ['OPENAI_APIKEY']
     prompt = [
-        {"role": "user", "content": message}
+        {"role": "user", "content": question}
+    ]
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=prompt,
+            temperature=0.7,
+            max_tokens=4000
+        )
+        message = question[:15] + "..." if len(question) > 15 else question
+        answer = response["choices"][0]["message"]["content"]
+        await interaction.followup.send(f"```質問内容: {message}\n\n{answer}```", ephemeral=True)
+    except:
+        await interaction.followup.send("エラーが発生しました。再度実行してください", ephemeral=True)
+
+async def translate_command(interaction: discord.Interaction, text: str) -> None:
+    """gptを使用したコマンド"""
+    await interaction.response.defer(thinking=True)
+    openai.api_key = os.environ['OPENAI_APIKEY']
+    prompt = [
+        {"role": "user", "content": f"以下の文章を翻訳してください。\n{text}"}
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=prompt,
+        prompt=prompt,
         temperature=0.7,
         max_tokens=4000
     )
-    message = message[:15] + "..." if len(message) > 15 else message
-    answer = response["choices"][0]["message"]["content"]
-    await interaction.followup.send(f"```質問内容: {message}\n{answer}```", ephemeral=True)
-    print(answer)
+    answer = response["choices"][0]["text"]
+    await interaction.followup.send(f"```原文\n{text}\n翻訳\n{answer}```", ephemeral=True)
