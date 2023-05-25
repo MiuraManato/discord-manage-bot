@@ -41,7 +41,8 @@ def setup_commands(tree):
         lang=[
             discord.app_commands.Choice(name="日本語", value="日本語"),
             discord.app_commands.Choice(name="英語", value="英語"),
-            discord.app_commands.Choice(name="韓国語", value="韓国語")
+            discord.app_commands.Choice(name="韓国語", value="韓国語"),
+            discord.app_commands.Choice(name="中国語", value="中国語")
         ]
     )
     @app_commands.describe(lang="翻訳後の言語")
