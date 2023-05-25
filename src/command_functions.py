@@ -100,4 +100,4 @@ async def translate_command(interaction: discord.Interaction, lang: str, text: s
         max_tokens=4000
     )
     answer = response["choices"][0]["message"]["content"]
-    await interaction.followup.send(f"```原文\n{text}\n翻訳\n{answer}```", ephemeral=True)
+    await interaction.followup.send(f"```[原文]\n{text}\n[翻訳]\n{answer}```", ephemeral=True)
