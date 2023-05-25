@@ -67,8 +67,8 @@ async def help_command(interaction: discord.Interaction) -> None:
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     await interaction.response.send_message(embed=embed)
 
+"""
 async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
-    """Minecraftサーバーの操作"""
     global isServer
     if (command is None and not isServer) or (command == "start" and isServer):
         isServer = True
@@ -90,6 +90,7 @@ async def minecraft_command(interaction: discord.Interaction, server: str, comma
     else:
         p.stdin.write(command.encode('utf-8'))
         await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
+"""
 
 async def gpt_command(interaction: discord.Interaction, question: str) -> None:
     """GPT-3を使用したコマンド"""
@@ -110,3 +111,19 @@ async def gpt_command(interaction: discord.Interaction, question: str) -> None:
         await interaction.followup.send(f"```質問内容: {message}\n\n{answer}```", ephemeral=True)
     except:
         await interaction.followup.send("エラーが発生しました。再度実行してください", ephemeral=True)
+
+async def translate_command(interaction: discord.Interaction, text: str) -> None:
+    """gptを使用したコマンド"""
+    await interaction.response.defer(thinking=True)
+    openai.api_key = os.environ['OPENAI_APIKEY']
+    prompt = [
+        {"role": "user", "content": f"以下の文章を英語に翻訳してください。\n{text}"}
+    ]
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        prompt=prompt,
+        temperature=0.7,
+        max_tokens=4000
+    )
+    answer = response["choices"][0]["text"]
+    await interaction.followup.send(f"```原文\n{text}\n翻訳\n{answer}```", ephemeral=True)

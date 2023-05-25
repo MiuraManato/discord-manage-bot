@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from command_functions import blacklist_command, nya_command, omikuzi_command, member_command, help_command, minecraft_command, gpt_command
+from command_functions import blacklist_command, nya_command, omikuzi_command, member_command, help_command, gpt_command, translate_command
 
 def setup_commands(tree):
     @tree.command(name="blacklist", description="メンバーのブラックリストへの追加、削除、一覧表示")
@@ -50,3 +50,7 @@ def setup_commands(tree):
     @app_commands.describe(message="GPTへの質問内容")
     async def _gpt_command(interaction: discord.Interaction, question: str) -> None:
         await gpt_command(interaction, question)
+
+    @tree.command(name="translate", description="GPTを使い翻訳できます")
+    async def _translate_command(interaction: discord.Interaction, text: str) -> None:
+        await translate_command(interaction, text)
