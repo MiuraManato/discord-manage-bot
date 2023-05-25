@@ -86,18 +86,18 @@ async def gpt_command(interaction: discord.Interaction, question: str) -> None:
     except:
         await interaction.followup.send("エラーが発生しました。再度実行してください", ephemeral=True)
 
-async def translate_command(interaction: discord.Interaction, text: str) -> None:
+async def translate_command(interaction: discord.Interaction, lang: str, text: str) -> None:
     """gptを使用したコマンド"""
     await interaction.response.defer(thinking=True)
     openai.api_key = os.environ['OPENAI_APIKEY']
     prompt = [
-        {"role": "user", "content": f"以下の文章を翻訳してください。\n{text}"}
+        {"role": "user", "content": f"以下の文を{lang}にしてください。\n{text}"}
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        prompt=prompt,
+        messages=prompt,
         temperature=0.7,
         max_tokens=4000
     )
-    answer = response["choices"][0]["text"]
+    answer = response["choices"][0]["message"]["content"]
     await interaction.followup.send(f"```原文\n{text}\n翻訳\n{answer}```", ephemeral=True)

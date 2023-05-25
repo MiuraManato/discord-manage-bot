@@ -32,11 +32,19 @@ def setup_commands(tree):
         await help_command(interaction)
 
     @tree.command(name="gpt", description="GPTを使用できます")
-    @app_commands.describe(message="GPTへの質問内容")
+    @app_commands.describe(question="GPTへの質問内容")
     async def _gpt_command(interaction: discord.Interaction, question: str) -> None:
         await gpt_command(interaction, question)
 
     @tree.command(name="translate", description="GPTを使い翻訳できます")
+    @app_commands.choices(
+        lang=[
+            discord.app_commands.Choice(name="日本語", value="日本語"),
+            discord.app_commands.Choice(name="英語", value="英語"),
+            discord.app_commands.Choice(name="韓国語", value="韓国語")
+        ]
+    )
+    @app_commands.describe(lang="翻訳後の言語")
     @app_commands.describe(text="翻訳する文章")
-    async def _translate_command(interaction: discord.Interaction, text: str) -> None:
-        await translate_command(interaction, text)
+    async def _translate_command(interaction: discord.Interaction, lang: str, text: str) -> None:
+        await translate_command(interaction, lang, text)
