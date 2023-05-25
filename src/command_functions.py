@@ -91,7 +91,7 @@ async def translate_command(interaction: discord.Interaction, text: str) -> None
     await interaction.response.defer(thinking=True)
     openai.api_key = os.environ['OPENAI_APIKEY']
     prompt = [
-        {"role": "user", "content": f"以下の文章を英語に翻訳してください。\n{text}"}
+        {"role": "user", "content": f"以下の文章を日本語ならば英語、英語ならば日本語に翻訳してください。\n{text}"}
     ]
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
