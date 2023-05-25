@@ -31,21 +31,6 @@ def setup_commands(tree):
     async def _help_command(interaction: discord.Interaction) -> None:
         await help_command(interaction)
 
-    """
-    @tree.command(name="minecraft", description="Minecraftのサーバーを起動、停止します")
-    @app_commands.default_permissions(administrator=True)
-    @discord.app_commands.choices(
-        server=[
-            discord.app_commands.Choice(name="survival", value="survival"),
-            discord.app_commands.Choice(name="catan", value="catan")
-        ]
-    )
-    @discord.app_commands.describe(server="サーバー名")
-    @discord.app_commands.describe(command="Minecraftのコマンドを送信します")
-    async def _minecrft_command(interaction: discord.Interaction, server: str, command: str = None) -> None:
-        await minecraft_command(interaction, server, command)
-    """
-
     @tree.command(name="gpt", description="GPTを使用できます")
     @app_commands.describe(message="GPTへの質問内容")
     async def _gpt_command(interaction: discord.Interaction, question: str) -> None:

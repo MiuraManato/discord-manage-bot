@@ -1,7 +1,6 @@
 import random
 import discord
 import json
-import subprocess
 import openai
 import os
 from utils import send_embed, read_blacklist
@@ -66,31 +65,6 @@ async def help_command(interaction: discord.Interaction) -> None:
     for command in commands.values():
         embed.add_field(name=command["name"], value=command["description"], inline=False)
     await interaction.response.send_message(embed=embed)
-
-"""
-async def minecraft_command(interaction: discord.Interaction, server: str, command: str) -> None:
-    global isServer
-    if (command is None and not isServer) or (command == "start" and isServer):
-        isServer = True
-        path = rf"C:\Minecraft server\{server}\start.bat"
-        try:
-            p = subprocess.Popen(path, stdin=subprocess.PIPE, shell=True)
-            await interaction.response.send_message("Minecraftサーバーを起動しました", ephemeral=True)
-        except FileNotFoundError:
-            await interaction.response.send_message("Minecraftサーバーの起動に失敗しました", ephemeral=True)
-
-    elif (command is None and isServer) or (command == "stop" and not isServer):
-        command = "stop"
-        p.stdin.write(command.encode('utf-8'))
-        isServer = False
-        await interaction.response.send_message("Minecraftサーバーを停止しました", ephemeral=True)
-    elif command == "status":
-        status = "起動中" if isServer else "停止中"
-        await interaction.response.send_message(status, ephemeral=True)
-    else:
-        p.stdin.write(command.encode('utf-8'))
-        await interaction.response.send_message("コマンドの送信に成功しました。", ephemeral=True)
-"""
 
 async def gpt_command(interaction: discord.Interaction, question: str) -> None:
     """GPT-3を使用したコマンド"""
