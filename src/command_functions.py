@@ -39,7 +39,7 @@ async def blacklist_command(interaction, method, user):
 
 async def nya_command(interaction):
     message = random.choice(["にゃーん", "みゃ", "にゃう", "しゃーっ", "みゃおん", "nyancat"])
-    await interaction.response.send_message(message, ephemeral=False) if message != "nyancat" else await interaction.response.send_message(file=discord.File("nyancat.gif"), ephemeral=False)
+    await interaction.response.send_message(message, ephemeral=False) if message != "nyancat" else await interaction.response.send_message(file=discord.File("./files/nyancat.gif"), ephemeral=False)
 
 async def omikuzi_command(interaction: discord.Interaction) -> None:
     omikuzi = random.choice(["大吉", "吉", "半吉", "凶", "半凶", "大凶"])
