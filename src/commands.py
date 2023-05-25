@@ -37,5 +37,6 @@ def setup_commands(tree):
         await gpt_command(interaction, question)
 
     @tree.command(name="translate", description="GPTを使い翻訳できます")
+    @app_commands.describe(text="翻訳する文章")
     async def _translate_command(interaction: discord.Interaction, text: str) -> None:
         await translate_command(interaction, text)

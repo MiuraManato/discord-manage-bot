@@ -18,5 +18,9 @@
     "gpt": {
         "name": "/gpt",
         "description": "AIが質問に答えます。情報は2021年までしかありません。"
+    },
+    "translate": {
+        "name": "/translate",
+        "description": "翻訳できます"
     }
 }
