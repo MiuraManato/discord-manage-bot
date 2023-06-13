@@ -107,17 +107,17 @@ async def minecraft_command(interaction: discord.Interaction, command: str) -> N
     await interaction.response.defer(thinking=True)
     server_status = is_container_running(container_id)
     if command == "start":
-        if server_status == True:
-            await interaction.followup.send("サーバーは起動済みです", ephemeral=False)
+        if server_status is True:
+            await interaction.followup.send("サーバーは起動済みです", ephemeral=True)
             return
-        command = ["docker","start",container_id]
+        command = ["docker", "start", container_id]
         subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
         await interaction.followup.send("サーバーを起動しました", ephemeral=False)
     elif command == "stop":
-        if server_status == False:
-            await interaction.followup.send("サーバーは停止済みです", ephemeral=False)
+        if server_status is False:
+            await interaction.followup.send("サーバーは停止済みです", ephemeral=True)
             return
-        command = ["docker","stop",container_id]
+        command = ["docker", "stop", container_id]
         subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
         await interaction.followup.send("サーバーを停止しました", ephemeral=False)
     elif command == "status":
