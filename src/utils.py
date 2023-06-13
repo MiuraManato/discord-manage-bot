@@ -1,6 +1,7 @@
 import json
 import datetime
 import discord
+import subprocess
 
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
 COMMANDS_FILE_PATH = "./files/commands.json"
@@ -56,3 +57,9 @@ async def send_embed(interaction, title, description, color=discord.Color.blue()
         for name, value in fields.items():
             embed.add_field(name=name, value=value, inline=False)
     await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
+
+def is_container_running(container_name):
+    command = ["docker", "inspect", "-f", "{{.State.Running}}", "cb537f8a839808b795ad66a80cfe623ce220164f67c4ecabfc681a5fa5206a61"]
+    result = subprocess.run(command, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
+    output = result.stdout.strip().lower()
+    return output == "true"

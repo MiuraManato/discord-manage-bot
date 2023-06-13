@@ -3,12 +3,13 @@ import discord
 import json
 import openai
 import os
-from utils import send_embed, read_blacklist
+import subprocess
+from utils import send_embed, read_blacklist, is_container_running
 
 BLACKLIST_FILE_PATH = "./files/blacklist.txt"
 COMMANDS_FILE_PATH = "./files/commands.json"
 LOG_FILE_PATH = "./files/log.txt"
-isServer = False
+container_id = os.environ["CONTAINER_ID_minecraft_server"]
 
 blacklist = read_blacklist()
 
@@ -101,3 +102,26 @@ async def translate_command(interaction: discord.Interaction, lang: str, text: s
     )
     answer = response["choices"][0]["message"]["content"]
     await interaction.followup.send(f"```[原文]\n{text}\n[翻訳]\n{answer}```", ephemeral=True)
+
+async def minecraft_command(interaction: discord.Interaction, command: str) -> None:
+    await interaction.response.defer(thinking=True)
+    server_status = is_container_running(container_id)
+    if command == "start":
+        if server_status is True:
+            await interaction.followup.send("サーバーは起動済みです", ephemeral=True)
+            return
+        command = ["docker", "start", container_id]
+        subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
+        await interaction.followup.send("サーバーを起動しました", ephemeral=False)
+    elif command == "stop":
+        if server_status is False:
+            await interaction.followup.send("サーバーは停止済みです", ephemeral=True)
+            return
+        command = ["docker", "stop", container_id]
+        subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=subprocess.CREATE_NO_WINDOW)
+        await interaction.followup.send("サーバーを停止しました", ephemeral=False)
+    elif command == "status":
+        if server_status:
+            await interaction.followup.send("サーバーは起動済みです", ephemeral=True)
+            return
+        await interaction.followup.send("サーバーは起動していません", ephemeral=True)
