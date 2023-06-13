@@ -16,11 +16,11 @@
         "description": "このメッセージを表示"
     },
     "gpt": {
-        "name": "/gpt",
+        "name": "/gpt [question]",
         "description": "AIが質問に答えます。情報は2021年までしかありません。"
     },
     "translate": {
-        "name": "/translate",
+        "name": "/translate [lang] [text]",
         "description": "翻訳できます"
     }
 }
