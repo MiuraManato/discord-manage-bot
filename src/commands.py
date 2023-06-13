@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from command_functions import blacklist_command, nya_command, omikuzi_command, member_command, help_command, gpt_command, translate_command
+from command_functions import blacklist_command, nya_command, omikuzi_command, member_command, help_command, gpt_command, translate_command, minecraft_command
 
 def setup_commands(tree):
     @tree.command(name="blacklist", description="メンバーのブラックリストへの追加、削除、一覧表示")
@@ -48,3 +48,14 @@ def setup_commands(tree):
     @app_commands.describe(text="翻訳する文章")
     async def _translate_command(interaction: discord.Interaction, lang: str, text: str) -> None:
         await translate_command(interaction, lang, text)
+
+    @tree.command(name="minecraft", description="Minecraftサーバーを起動/停止します")
+    @app_commands.choices(
+        commands=[
+            discord.app_commands.Choice(name="start", value="start"),
+            discord.app_commands.Choice(name="stop", value="stop"),
+            discord.app_commands.Choice(name="status", value="status")
+        ]
+    )
+    async def _minecraft_command(interaction: discord.Interaction, commands: str) -> None:
+        await minecraft_command(interaction, commands)
