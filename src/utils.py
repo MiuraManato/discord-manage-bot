@@ -58,7 +58,7 @@ async def send_embed(interaction, title, description, color=discord.Color.blue()
             embed.add_field(name=name, value=value, inline=False)
     await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
 
-def is_container_running(container_name, container_id) -> bool:
+def is_container_running(container_id) -> bool:
     command = ["docker", "inspect", "-f", "{{.State.Running}}", container_id]
     result = subprocess.run(command, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
     output = result.stdout.strip().lower()
