@@ -125,4 +125,3 @@ async def minecraft_command(interaction: discord.Interaction, command: str) -> N
             await interaction.followup.send("サーバーは起動済みです", ephemeral=True)
             return
         await interaction.followup.send("サーバーは起動していません", ephemeral=True)
-       
