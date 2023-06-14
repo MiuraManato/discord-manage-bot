@@ -95,7 +95,7 @@ async def translate_command(interaction: discord.Interaction, lang: str, text: s
         {"role": "user", "content": f"以下の文を{lang}にしてください。\n{text}"}
     ]
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo-0613",
         messages=prompt,
         temperature=0.7,
         max_tokens=4000
