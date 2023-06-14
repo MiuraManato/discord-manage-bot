@@ -22,5 +22,9 @@
     "translate": {
         "name": "/translate [lang] [text]",
         "description": "翻訳できます"
+    },
+    "minecraft": {
+        "name": "/minecraft [start/stop/status]",
+        "description": "Minecraftのサーバーを起動、停止、ステータスを表示できます"
     }
 }
